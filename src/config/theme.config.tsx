@@ -10,7 +10,10 @@ type ThemeProp = {
 enum ThemePalette {
   SLATE = '#0f172a',
   CYAN = '#06b6d4',
-  FONT_GLOBAL = 'JetBrains Mono, monospace'
+  FONT_GLOBAL = 'JetBrains Mono, monospace',
+  // Alerts
+  ERROR_MAIN = '#450a0a',
+  BG_ERROR_MAIN = '#dc2626'
 }
 
 const theme = createTheme({
@@ -43,6 +46,23 @@ const theme = createTheme({
           textTransform: 'none',
           boxShadow: 'none',
           borderRadius: '0.5em'
+        }
+      }
+    },
+    MuiAlert: {
+      defaultProps: {
+        style: {
+          borderRadius: '0.8em',
+          fontSize: '1em'
+        }
+      },
+      // styleOverrides nos permite sobreescribir los estilos
+      // de un componente en especifico, en este caso vamos
+      // a modificar los estilos del alert de error
+      styleOverrides: {
+        standardError: {
+          border: `1px solid ${ThemePalette.ERROR_MAIN}`,
+          background: ThemePalette.BG_ERROR_MAIN
         }
       }
     }
