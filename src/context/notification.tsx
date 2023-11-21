@@ -3,34 +3,71 @@ import { useState, useContext, createContext } from 'react'
 import { AlertColor } from '@mui/material'
 import { Notification } from "../components";
 
+/**
+ * Un Context se compone de 3 cosas, un contexto, un provider y un
+ * hook.
+ * 
+ * El contexto define los metodos y variables que seran
+ * accedidos desde el contexto
+ * 
+ * El provider define el cuerpo y comportamiento de las funciones y
+ * variables definidas en el contexto
+ * 
+ * Y el hook es el que nos da acceso al contexto desde los componentes
+ */
+
+/**
+ * Basicamente el ContextProps, son los valores y funciones que
+ * van a poder ser accedidos desde el contexto
+ */
 type ContextProps = {
   getError: (message: string) => void
 }
 
-// Primero creamos un contexto a traves de la funcion createContext de React
-// Este contexto recibe un generico, el cual estara definido por un type que
-// contendra todas las variables y funciones que podran ser accedidas en el
-// contexto
+/**
+ * Primero creamos un contexto a traves de la funcion createContext
+ * de React. Este contexto recibe un generico, el cual estara definido
+ * por un type que contendra las variables y funciones que podran
+ * ser accedidas en el contexto.
+ */
 const NotificationContext = createContext<ContextProps | null>(null);
 
-// Segundo, debemos crear un provider del contexto, este provider por defecto
-// recibe un children, el cual seran los componentes que llegan al contexto
-// y pueden acceder a los estados y a las funciones
+/**
+ * Despues debemos crear el provider del contexto. Este provider por
+ * defecto recibe un children, el cual seran los componentes que
+ * llegan al contexto y pueden acceder a los estados y las funciones
+ * del mismo.
+ * 
+ * Es como si todo este codigo del provider se agregara a los componentes
+ * que acceden al contexto, de esta forma pueden acceder a todos los
+ * estados y funciones que estan dentro del mismo.
+ */
 export const NotificationProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  // Dentro del provider podemos manejar estados y funciones que podran ser accedidas
-  // por los componentes que estan dentro del contexto
+  /**
+   * Es asi, que dentro del provider podemos manejar estados y funciones
+   * que podran ser accedidos por los componentes que hagan uso del
+   * contexto a traves del hook.
+   */
   const [message, setMessage] = useState('')
   const [open, setOpen] = useState(false)
   const [severity, setSeverity] = useState<AlertColor | undefined>(undefined)
   
-  // Aqui definimos que hara la funcion que agregamos en el type de nuestro contexto
+  /**
+   * Como vez, aqui podemos definir el cuerpo de la funcion que definimos
+   * en las contextProps. Las contextProps podrian considerarse como
+   * una interface y el provider como la implementacion de la interface
+   */
   const getError = (message: string) => {
     setSeverity('error')
     setOpen(true);
     setMessage(message);
   }
 
-  // Y asi mismo podemos crear funciones que manipulen los estados
+  /**
+   * Y asi mismo, podemos crear funciones que manipulan los estados,
+   * pero, si estas funciones no son agregadas a las contextProps,
+   * entonces no puden ser accedidas por no estar dentro del contexto
+   */
   const handleClose = () => {
     setOpen(false);
   }
@@ -40,13 +77,18 @@ export const NotificationProvider: React.FC<{ children: JSX.Element }> = ({ chil
   }
 
   return (
-    // Creamos una etiqueta del contexto y accedemos a su provider, este recibe
-    // un value, el cual es un objeto con las propiedades que previamente
-    // definimos en el type
+    /**
+     * Creamos una etiqueta del contexto y accedemos a su provider,
+     * este recibe un value, el cual es un objeto con las propiedades
+     * que previamente definimos en el contextProps, pero solo los
+     * nombres de la funciones y estados, no los cuerpos.
+     */
     <NotificationContext.Provider value={value}>
-      {/* Ahora podemos pasar el valor de los estados a los componentes que estan
-      dentro del contexto, ya sea desde aqui en el provider o siendo recibidos
-      a traves de las funciones del contexto */}
+      {/*
+      Ahora podemos pasar el valor de los estados a los componentes
+      que esten dentro del contexto, ya sea desde aqui en el provider
+      o siendo recibidos a traves de las funciones del contexto
+      */}
       <Notification
         handleClose={handleClose}
         open={open}
@@ -61,8 +103,10 @@ export const NotificationProvider: React.FC<{ children: JSX.Element }> = ({ chil
   )
 }
 
-// Por ultimo exportamos el customHook, para poder usarlo en los componentes donde queremos
-// acceder al contexto
+/**
+ * Por ultimo, exportamos el customHook para poder usarlo en los
+ * componentes donde querramos acceder al contexto
+ */
 export const useNotification = () => {
   const context = useContext(NotificationContext);
 
@@ -73,5 +117,6 @@ export const useNotification = () => {
   return context;
 }
 
-//* NOTA: No olvidar englobar el BrowserRouter con el NotificationProvider para que los componentes
+//* NOTA: No olvidar englobar el BrowserRouter con el 
+//* NotificationProvider para que los componentes
 //* puedan acceder al contexto
