@@ -13,7 +13,9 @@ enum ThemePalette {
   FONT_GLOBAL = 'JetBrains Mono, monospace',
   // Alerts
   ERROR_MAIN = '#450a0a',
-  BG_ERROR_MAIN = '#dc2626'
+  BG_ERROR_MAIN = '#dc2626',
+  SUCCESS_MAIN = '#66bb6a',
+  BG_SUCCESS_MAIN = 'rgba(102, 187, 106, 0.1)', 
 }
 
 const theme = createTheme({
@@ -63,6 +65,10 @@ const theme = createTheme({
         standardError: {
           border: `1px solid ${ThemePalette.ERROR_MAIN}`,
           background: ThemePalette.BG_ERROR_MAIN
+        },
+        standardSuccess: {
+          border: `1px solid ${ThemePalette.SUCCESS_MAIN}`,
+          background: ThemePalette.BG_SUCCESS_MAIN,
         }
       }
     }
