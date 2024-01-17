@@ -25,7 +25,7 @@ type NotificationProps = {
 export const Notification: React.FC<NotificationProps> = ({ open, message, severity, handleClose }) => {
   return (
     /**
-     * Snaclbar es el componente de MaterialUI que nos permite lanzar
+     * Snackbar es el componente de MaterialUI que nos permite lanzar
      * notificaciones de tipo toast.
      * 
      * Dentro agregamos un Alert para darle un estilado diferente al
