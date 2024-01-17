@@ -20,12 +20,10 @@ const findAll = ({ page = 1 }: { page?: number }) => {
     }});
 };
 
-const findById = ({ id }: { id: number }) => {
-    return instance.get(endpoint, {
-        params: {
-            id,
-        }
-    });
+const findById = ({ id }: { id: string | undefined }) => {
+    console.log('characters ->', id);
+    // TODO: Investigar la forma de consumir endpoint por params en axios
+    return instance.get(`${endpoint}/${id}`)
 };
 
 /**
